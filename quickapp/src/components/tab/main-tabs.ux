@@ -1,0 +1,75 @@
+<template>
+  <div class="tabs">
+    <div class="tab-content"><slot></slot></div>
+    <div class="tab-bar">
+      <div class="tab-item" for="tabList" onclick="changeTab($idx)">
+        
+        <block if='{{$idx == selectedTab}}'>
+        <image class="image" src="{{ $item.icon_selected}}"> </image>
+        </block>
+        <block else>  
+        <image class="image" src="{{ $item.icon}}"> </image>    
+        </block>
+        <text
+          class="tab-title"
+          style="color: {{$idx === selectedTab ? activatedColor : deactivatedColor}}"
+        >
+          {{ $item.title }}
+        </text>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    tabList: {},
+    selectedTab: {},
+    deactivatedColor: {
+      default: '#707780'
+    },
+    activatedColor: {
+      default: '#55c7f9'
+    }
+  },
+  changeTab(index) {
+    this.$emit('changeTab', { index })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../styles/index.less';
+
+.tabs {
+  flex: 1;
+  flex-direction: column;
+  background-color:@white;
+  .tab-content {
+    flex: 1;
+  }
+}
+.tab-bar {
+  background-color: @white;
+  .border-top-mixins();
+  padding: 15px 0;
+  height: 120px;
+  justify-content: space-around;
+  .tab-item {
+    flex-direction: row;
+    flex: 1;
+    .flex-box-mixins(column, center, center);
+
+    .tab-title {
+      margin-top: 10px;
+      font-size: 20px;
+    }
+    .image
+    {
+      width: 45px;
+      height: 45px;
+    }
+  }
+}
+</style>

@@ -1,0 +1,215 @@
+
+
+<template>
+
+  <div class="page-container-white">
+    <div class="login" onclick="login" if="{{!logined}}">
+      <div class="login-user">
+        <image class="image" src="../../Common/icon/touxiang.png"></image>
+      </div>
+      <text class="login-text">登陆/注册</text>
+    </div>
+
+    <div class="login" onclick="changeinfo" if="{{logined}}">
+      <div class="login-user">
+        <image class="image" src="../../Common/icon/project-logo.png"></image>
+      </div>
+      <text class="login-text">{{user_name}}</text>
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        <div class="section-title-line"></div>
+        <text class="text-title">个人服务</text>
+      </div>
+      <div class="section-content">
+        <div for="serviceList" class="section-item" onclick="switchPage($item)">
+          <div class="section-icon">
+            <image class="icon-logo" src='{{ $item.icon }}'></image>
+
+          </div>
+          <text class="section-item-text">{{$item.title}}</text>
+        </div>
+      </div>
+    </div>
+   
+
+      <div class='quit-container' if="{{logined}}">
+        <text class='quit-btn' onclick='quit'>退出登录</text>
+      </div>
+    </div>
+
+</template>
+<script>
+import prompt from '@system.prompt'
+export default {
+  props: [],
+  data: {
+    serviceList: [
+      {
+        title: '个人数据',
+        icon: '../../Common/icon/data-be.png',
+        page: ''
+      }, 
+      {
+        title: '我的钱包',
+        icon: '../../Common/icon/wallet-selected.png',
+        page: 'Pages/wallet'
+      },
+      {
+        title: '我的收藏',
+        icon: '../../Common/icon/collect-be.png',
+        page: ''
+      },
+     
+    ],
+    logined: false,
+    userinfo: {
+      user_sex: '男',
+      user_birdate: '',
+      user_name: 'funbag_0575',
+      user_type: '普通用户',
+      user_address: 'China',
+      user_id: '5',
+      user_wallet: '',
+      user_phone: '123456789012',
+    },
+    getinfoparams: {
+      url: 'http://127.0.0.1:7300/mock/5e89d63e899aab0520cf2533/machine/userinfo',
+      method: "POST",
+      header: {
+        token: ''
+      }
+    },
+  },
+
+  onReady() {
+    this.$app.$def.getStorage('userLogined').then(value => {
+      this.logined = value === 'true';
+      this.$app.$def.saveuserinfo(this.userinfo)
+      this.user_name = this.$app.$def.userinfo.user_name
+      if (this.logined) {
+        this.getinfoparams.header.token = this.$app.$def.token
+        this.$app.$def.request(this.getinfoparams).then(result => {
+          if (result.success) {
+            this.userinfo = result
+            this.$app.$def.saveuserinfo(this.userinfo)
+            this.$app.$def.showToast(`${result.msg},${this.user_name}`)
+            if (this.user_name === '')
+              this.user_name = 'funbag_0575'
+          }
+        })
+      }
+    })
+  },
+
+  switchPage(item) {
+    // 根据item跳转到对应页面
+    this.$app.$def.route2theUrl(item.page, true)
+  },
+
+  login() {
+    this.$app.$def.route2theUrl('Pages/login', true)
+  },
+  changeinfo() {
+    this.$app.$def.route2theUrl('Pages/userinfo', true)
+  },
+  quit() {
+    prompt.showDialog({
+      title: '确定退出登录？',
+      message: '',
+      buttons: [
+        {
+          text: '确定',
+          color: '#55c7f9'
+        },
+        {
+          text: '取消',
+          color: '#000000'
+        }
+      ],
+      success: data => {
+        if (data.index === 0) {
+          this.$app.$def.setSelectedTab(2)
+          this.$app.$def.quitlogin()
+        }
+      },
+      cancel: () => {
+
+      },
+      fail: (data, code) => {
+        this.$app.$def.showToast(`${code}`)
+      }
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import "../../styles/index.less";
+
+
+.login {
+  height: 500px;
+  background-color: #55c7f9;
+  margin-bottom: 40px;
+  .flex-box-mixins(column, center, center);
+  .login-user {
+    width: 180px;
+    height: 180px;
+    background-color:@white;
+    border-radius: 90px;
+    margin-bottom: @gap-2;
+    .iconfont {
+      font-size: 120px;
+      color: @white;
+    }
+  }
+
+  .login-text {
+    color: @white;
+  }
+}
+.image {
+  width: 200px;
+  height: 200px;
+  padding-bottom: 20px;
+}
+.page-container .section {
+  margin-bottom: @gap-2;
+
+}
+.icon-logo {
+  width: 55px;
+  height: 55px;
+  margin-bottom: 10px;
+}
+.section-item {
+  width: 33.3%;
+  -padding-top: @gap-2;
+  flex-direction: column;
+  .section-icon {
+    .flex-box-mixins(row, center, center);
+    .iconfont {
+      font-size: 45px;
+    }
+  }
+}
+
+.quit-container {
+  width: 100%;
+
+  .flex-box-mixins(row, center, center);
+}
+.quit-btn {
+  width: 80%;
+  height: 80px;
+  color: @white;
+  margin-top: 300px;
+  border-radius: 0px;
+  text-align: center;
+  background-color: @theme-blue;
+  border-color: @theme-blue;
+  border-style: solid;
+}
+</style>

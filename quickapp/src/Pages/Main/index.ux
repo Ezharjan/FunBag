@@ -1,0 +1,100 @@
+
+<import name="my" src="../../Pages/My/index.ux"></import>
+<import name="msg" src="../../Pages/Msg/index.ux"></import>
+<import name="scan" src="../../Pages/Scan/index.ux"></import>
+<import name="main-tabs" src="../../components/tab/main-tabs.ux"></import>
+<import name="title-bar" src="../../components/bar/title-bar.ux"></import>
+
+<!-------------------------------------->
+<import name="card" src="../../CardDemo/NegativeScreen/index.ux"></import>
+<import name="test" src="../../Pages/getdata/index.ux"></import>
+<import name="login" src="../../Pages/login/index.ux"></import>
+<import name="bags" src="../../Pages/bags/index.ux"></import>
+<import name="datatable" src="../../Pages/datatable/index.ux"></import>
+<import name="wallet" src="../../Pages/wallet/index.ux"></import>
+ 
+
+<template>
+  <div class="page-wrapper">
+    <title-bar class='title-bar' title='{{showtitle}}' show-back="{{false}}"></title-bar>
+    <main-tabs tab-list="{{tabList}}" selected-tab="{{selectedTab}}" onchange-tab="changeTab">
+      <scan if="{{selectedTab === 0}}"></scan>
+      <msg if="{{selectedTab === 1}}"></msg>
+      <my if="{{selectedTab === 2}}"></my>  
+      <card if="{{selectedTab === 3}}"></card>
+    </main-tabs>
+     
+  </div>
+</template>
+
+
+<script>
+export default {
+  protected: {
+    logined: false,
+  },
+
+  /*onMenuPress() {
+    this.$app.$def.showMenu();
+  },*/
+  private: {
+    tabList: [
+      {
+        title: '取袋',
+        showtitle: '趣袋',
+        icon: '../../Common/icon/scan.png',
+        icon_selected: '../../Common/icon/scan-selected.png'
+
+      },
+      {
+        title: '推送',
+        showtitle: '推送',
+        icon: '../../Common/icon/spread.png',
+        icon_selected: '../../Common/icon/spread-selected.png'
+
+      },
+      {
+        title: '我的',
+        showtitle: '',
+        icon: '../../Common/icon/my.png',
+        icon_selected: '../../Common/icon/my-selected.png'
+      }
+
+     
+    ],
+    selectedTab: 0,
+    showtitle: '',
+    deactivatedColor: '#707780',
+    activatedColor: '#55c7f9',
+    timeout: null
+  },
+
+  onShow() {
+    this.selectedTab = this.$app.$def.selectedTab || 0
+    this.showtitle = this.tabList[this.selectedTab].showtitle
+  },
+
+  changeTab(e) {
+
+    // 过快地切换自定义的tab，可能出现布局错乱问题，用延时方式解决。
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+    this.timeout = setTimeout(() => {
+      let index = e.detail.index || 0
+      this.selectedTab = index
+      this.showtitle = this.tabList[this.selectedTab].showtitle
+      this.$app.$def.selectedTab = index
+    }, 100)
+  }
+}
+</script>
+
+<style lang="less">
+@import "../../styles/index.less";
+
+.title-bar {
+  background-color: @theme-blue;
+}
+</style>
+

@@ -1,0 +1,240 @@
+<import name="title-bar" src="../../components/bar/title-bar.ux"></import>
+<template>
+    <div class="layout">
+        <title-bar title='选袋 ' show-back="{{true}}"></title-bar>
+        <list class="bag-container" onscrollbottom="renderMoreListItem">
+
+            <list-item type="bag" class="item-bag" for="bags" onclick=pay($item.name)>
+                <image class="bag-image" src="{{$item.main_img_url}}"></image>
+                <div class="bag-text-wrap">
+                    <text class="bag-text-name">{{$item.name}}</text>
+                    <div class="sec">
+                        <text class="bag-text-discribe">可以多次使用 </text>
+                        <div class="sec-text">
+                            <text class="bag-text-num">剩余{{$item.stock}}</text>
+                            <div class="sec-text-price">
+                                <text class="bag-text-price">￥{{$item.price}} </text>
+                            </div>
+
+                        </div>
+
+                    </div>
+            </list-item>
+
+        </list>
+    </div>
+
+</template>
+
+
+<script>
+import { bagDatas } from '../../assests/js/bagData.js'
+import prompt from '@system.prompt'
+import router from '@system.router'
+// 模拟fetch请求数据
+function callFetch(callback) {
+    setTimeout(function () {
+        callback(bagDatas)
+    }, 500)
+}
+
+// 内存中存储的列表数据
+let memList = []
+
+export default {
+    data: {
+        getbagdatas:
+            {
+                url: 'http://127.0.0.1:7300/mock/5e89d63e899aab0520cf2533/machine/bag',
+                method: 'GET',
+            },
+        buybag:
+            {
+                url: 'http://127.0.0.1:7300/mock/5e89d63e899aab0520cf2533/machine/scan',
+                method: 'POST',
+                data:
+                    {
+                        machine: {},
+                    },
+                header: {
+                    token: ''
+                }
+            },
+        bags: [],
+        hasMoreData: true,
+        // 每次渲染的商品数
+        size: 6,
+        // 是否正在fetch请求数据
+        isLoadingData: false
+    },
+    onInit() {
+        this.bags = [],
+
+            //从服务器获取购物袋信息
+            // this.$app.$def.requestHandle(this.getbagdatas).then(result => {
+            //     this.bags = result.bag
+            //     this.$app.$def.showToast(`Init Suc!`)
+            // }).catch(e => {
+            //     this.$app.$def.showToast(`${e}`)
+            // })
+
+            //获取数据并渲染列表
+            this.loadAndRender()
+    },
+    /**
+     * 请求并渲染
+     */
+    loadAndRender(doRender = true) {
+        this.isLoadingData = true
+        // 重新请求数据并根据模式判断是否需要渲染列表
+        callFetch(function (resList) {
+            this.isLoadingData = false
+            if (!resList) {
+                console.error(`数据请求错误`)
+            }
+            else if (!resList.length) {
+                this.hasMoreData = false
+            }
+            else {
+                memList = memList.concat(resList)
+                if (doRender) {
+                    this._renderList()
+                }
+            }
+        }.bind(this))
+    },
+    _renderList() {
+        // 渲染列表
+        if (memList.length > 0) {
+            const list = memList.splice(0, this.size)
+            this.bags = this.bags.concat(list)
+        }
+        if (memList.length <= this.size) {
+            // 提前请求新的数据
+            this.loadAndRender(false)
+        }
+    },
+    pay(bagname) {
+        prompt.showDialog({
+            title: `请确认购买${bagname}`,
+            message: '每次只能购买一个',
+            buttons: [
+                {
+                    text: '支付',
+                    color: '#55c7f9'
+                },
+                {
+                    text: '取消',
+                    color: '#000000'
+                }
+            ],
+            success: data => {
+                if (data.index === 0) {
+                    this.$app.$def.getStorage('machine').then(result => {
+                        this.buybag.data.machine = JSON.parse(result)
+                    })
+                    this.buybag.header.token = this.$app.$def.token
+                    this.$app.$def.requestHandle(this.buybag).then(result => {
+                        this.$app.$def.showToast(`支付完成:${result.msg}`)
+                    }).catch(error => {
+                        this.$app.$def.showToast(`${error}`)
+                    })
+                    router.back()
+                    this.$app.$def.showToast(`支付完成,请等待吐袋`)
+                     
+                     //对页面进行刷新，避免组件显示失败
+                     this.$app.$def.route2theUrl('Pages/Main', false)
+                }
+            },
+            cancel: () => {
+
+            },
+            fail: (data, code) => {
+                this.$app.$def.showToast(`${code}`)
+            }
+        })
+    }
+
+}
+
+
+
+</script>
+<style lang="less">
+@import "../../styles/index.less";
+.layout {
+  flex-direction: column;
+}
+
+.bag-container {
+  width: 100%;
+  background-color: @theme-blue;
+  flex-direction: column;
+  .item-bag {
+    background-color: #ffffff;
+    flex-direction: row;
+    width: 100%;
+    height: 250px;
+    border-radius: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    .bag-image {
+      width: 70%;
+      height: 100%;
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+    }
+  }
+}
+
+.bag-text-wrap {
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  padding: @gap-2;
+  background-color: #ffffff;
+  flex-direction: column;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+
+  .bag-text-name {
+    color: @black;
+    font-size: 6 * @size-factor;
+    font-weight: 600;
+    font-stretch: wider;
+  }
+
+  .bag-text-stock {
+    margin-top: 10px;
+    color: #bbbbbb;
+    font-size: 5 * @size-factor;
+  }
+
+  .sec {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .bag-text-discribe {
+    color: @text-black;
+    margin-top: @gap-2;
+    margin-bottom: @gap-7;
+  }
+  .sec-text {
+    flex-direction: row;
+  }
+  .bag-text-price {
+    margin-left: 180px;
+    color: #000000;
+  }
+
+  .sec-text-price {
+    flex-basis: 65%;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}
+</style>

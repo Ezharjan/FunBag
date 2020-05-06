@@ -1,0 +1,195 @@
+<import name="title-bar" src="../../components/bar/title-bar.ux"></import>
+<template>
+  <div class="account-wrapper">
+    <title-bar title='用户信息' show-back="{{true}}"></title-bar>
+    <!-- 账户管理页面 -->
+    <div class="account-image">
+      <image class="head-image" src={{img}} onclick="changeHeadimg"></image>
+
+    </div>
+    <div class="account-item">
+      <text class="account-left">昵称</text>
+      <input type='text' class="account-right" placeholder="请输入昵称" value="{{input.user_name}}" onchange="changeName"></text>
+    </div>
+
+    <div class="account-item">
+      <text class="account-left">性别</text>
+      <text class="account-right" placeholder="请输入性别" value="{{input.user_sex}}" onchange="changeSex"></text>
+    </div>
+    <!--
+     <div class="account-item">
+      <text class="account-left">性别</text>
+      <select  >
+      <option  class="select-option" selected="true" value="男"></option>
+      <option   class="select-option"  value="女"></option>
+      </select>
+    </div>
+    -->
+    <div class="account-item">
+      <text class="account-left">地址</text>
+      <input type='text' class="account-right" placeholder="请输入地址" value="{{input.user_address}}" onchange="changeAddress"></text>
+    </div>
+
+    <div class="account-item">
+      <text class="account-left">电话</text>
+      <input type='number' class="account-right" placeholder="请输入电话" value="{{input.user_phone}}" onchange="changePhone"></text>
+    </div>
+    <!--
+     <div class="account-item">
+      <text class="account-left">生日</text>
+      <input type='date'  class="account-right"   ></text>
+    </div>
+    -->
+
+    <div class="account-item">
+      <text class="account-left">用户类型</text>
+      <text class="account-right" value="{{input.user_type}}"></text>
+    </div>
+
+    <div class='save-contianer'>
+      <text class="save-btn" onclick="saveinfo">保存信息</text>
+    </div>
+  </div>
+</template>
+
+<script>
+import media from '@system.media'
+import prompt from '@system.prompt'
+import router from '@system.router'
+export default {
+  data: {
+    img: "../../Common/icon/project-logo.png",
+
+    input: {
+      user_sex: '',
+      user_birdate: '',
+      user_name: '',
+      user_type: '',
+      user_address: '',
+      user_id: '',
+      user_wallet: '',
+      user_phone: ' ',
+    },
+    saveparams: {
+      url: '',
+      method: 'POST',
+      data:
+        {
+          user_info: {}
+        },
+      header: {
+        token: ''
+      }
+    },
+
+  },
+  changeName(e) {
+    this.input.user_name = e.value
+  },
+  changePhone(e) {
+    this.input.user_phone = e.value
+  },
+  changeAddress(e) {
+    this.input.user_address = e.value
+  },
+  changeSex(e) {
+    this.input.user_sex = e.value
+  },
+  changeBirdate(e) {
+    this.input.user_birdate = e.value
+  },
+  onInit() {
+
+    this.input = this.$app.$def.userinfo
+
+  },
+
+  saveinfo() {
+    this.$app.$def.saveuserinfo(this.input)
+
+    this.saveparams.header.token = this.$app.$def.token;
+    this.saveparams.data.user_info = this.input
+
+    this.$app.$def.requestHandle(this.saveparams).then(result => {
+      if (result.success)
+        this.$app.$def.showToast(`${result.msg}`)
+    })
+    this.$app.$def.showToast('保存成功！')
+    this.$app.$def.setSelectedTab(0)
+    router.back()
+
+  },
+  changeHeadimg() {
+
+    media.pickImage({
+      success: function (data) {
+       this.img=data.uri
+       prompt.showToast({
+         message:`${this.img}`
+       })
+      }
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import "../../styles/index.less";
+
+.account-wrapper {
+  width: 100%;
+  flex-direction: column;
+}
+
+.account-item {
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+  margin: 0px 40px 0px 40px;
+  border-bottom-width: 1px;
+  border-color: @grey;
+}
+.account-image {
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.head-image {
+  width: 150px;
+  height: 150px;
+  margin: 40px 40px 40px 40px;
+}
+.account-left {
+  color: @theme-blue;
+  opacity: 1;
+  font-size: 6 * @size-factor;
+}
+.select-option {
+  text-size: 60px;
+  text-color: @black;
+}
+.account-right {
+  color: @text-black;
+  opacity: 0.8;
+  font-size: 6 * @size-factor;
+  text-align: right;
+}
+
+.save-contianer {
+  margin-top: 380px;
+  flex-direction: row;
+  justify-content: center;
+}
+.save-btn {
+  width: 90%;
+  height: 80px;
+  color: @white;
+  margin-top: 80px;
+  border-radius: 0px;
+  text-align: center;
+  background-color: @theme-blue;
+  border-color: @theme-blue;
+  border-style: solid;
+}
+</style>

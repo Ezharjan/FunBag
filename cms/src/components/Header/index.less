@@ -1,0 +1,58 @@
+@import './../../style/default.less';
+.header{
+    background-color: @colorM;
+    .header-top{
+        height: 60px;
+        line-height: 60px;
+        padding: 0 20px;
+        text-align: right;
+        .logo{
+            line-height: 60px;
+            text-align: left;
+            font-size: 18px;
+            img{
+                height: 35px;
+                vertical-align: middle;
+            }
+            span{
+                margin-left: 10px;
+                vertical-align: middle;
+            }
+        }
+        a{
+            margin-left: 40px;
+        }
+    }
+    .breadcrumb{
+        height: 40px;
+        line-height: 40px;
+        padding: 0 20px;
+        border-top: 1px solid #000000;//#f9c700
+        .breadcrumb-title{
+            text-align: center;
+            font-size: @fontC;
+            &:after{
+                position: absolute;
+                content: '';
+                top: 39px;
+                left: 82px;
+                border-top: 9px solid @colorM;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+            }
+        }
+        .weather{
+            text-align: right;
+            .date{
+                margin-right: 10px;
+            }
+        }
+    }
+}
+// common 页面简单头
+.simple-page{
+    .header-top{
+      background:#23a82a;
+      color:@colorM;
+    }
+}

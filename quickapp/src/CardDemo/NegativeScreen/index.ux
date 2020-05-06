@@ -1,0 +1,89 @@
+<template>
+  <div class="card">
+    <div class="applogo" >
+      <image class="logo" src="../../Common/icon/project-logo.png"></image>
+      <text class="logo-name">趣袋</text> 
+      <div class="logo-time">
+      <text class="time">{{time}}</text>
+      </div>
+    </div>
+      <text class="title">愿凛冬消散，星河长明</text>
+      <text class="content">负一屏卡片测试，推送内容</text>
+  </div>
+</template>
+
+<style lang="less">
+@import '../../styles/index.less';
+.card {
+  flex-direction: column;
+  height: 240px;
+  width: 100%;
+  padding: 30px 35px;
+  background-color: #E4EAF0;
+  border-radius: 25px;
+  margin-bottom: 1.5 * @size-factor;
+}
+.applogo
+{
+  flex-direction: row;
+   margin-bottom: 3 * @size-factor;
+}
+.logo{
+  width: 9*@size-factor;
+  height: 9*@size-factor;
+  background-color: @white;
+  border-radius: 8*@size-factor;
+}
+.logo-name{
+  color: @text-grey;
+  font-size:6 * @size-factor;
+  justify-content: center;
+  margin-top: @size-factor;
+  margin-left: 4 * @size-factor;
+  }
+.logo-time{
+  width:80%;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+ .time{
+  color:@text-grey;
+  text-align: right;
+
+  text-overflow: ellipsis;
+  font-size: 6 *@size-factor;
+  margin-bottom: @size-factor;
+  lines: 3;
+}
+.title {
+  text-align: left;
+  color: @black;
+  lines: 2;
+  font-size: 6 *@size-factor;
+  margin-bottom: @size-factor;
+}
+.content{
+  color:@text-grey;
+  text-align: left;
+  text-overflow: ellipsis;
+  font-size: 6 *@size-factor;
+  margin-bottom: @size-factor;
+  lines: 3;
+}
+
+
+</style>
+
+<script> 
+  export default {
+  data() 
+  {
+    var time = this.$app.$def.data.time;
+    return  {
+      time
+    }
+  },
+  
+}
+
+</script>

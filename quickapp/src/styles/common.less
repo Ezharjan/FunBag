@@ -1,0 +1,244 @@
+  // page
+.page-wrapper {
+  width: 100%;
+  flex-direction: column;
+  color: @text-black;
+  background-color: @bg-grey;
+  justify-self: center;
+}
+.page-container{
+  flex: 1;
+  .page-column;
+}
+.page-container-white{
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  background-color: @white;
+}
+.page-column {
+  width: 100%;
+  flex-direction: column;
+}
+
+// text
+.text{
+  font-size: 7 * @size-factor;
+}
+.text-black{
+  font-size: 7 * @size-factor;
+  color: @text-black;
+}
+.text-warning{
+  font-size: 7 * @size-factor;
+  color: @warning;
+}
+.text-primary{
+  //font-size: 7 * @size-factor;
+  color: @white;
+  background-color: @theme-blue;
+  border-right:10px;
+  border-left: 10px;
+  border-color: @theme-blue;
+
+}
+.text-remark{
+  font-size: 5 * @size-factor;
+  color: @text-grey;
+}
+.text-remark-black{
+  font-size: 5 * @size-factor;
+  color: @text-black;
+}
+.text-remark-big{
+  font-size: 6 * @size-factor;
+  color: @text-grey;
+}
+.text-remark-warning{
+  font-size: 6 * @size-factor;
+  color: @warning;
+}
+.text-title{
+  .text-black;
+  font-weight: bold;
+}
+.title{
+  font-size: 12 * @size-factor;
+  color: @text-black;
+  font-weight: bold;
+}
+
+// button
+.button {
+  height: 10 * @size-factor;
+  width: 100%;
+  background-color: #e2efff;
+  padding: 0 3 * @size-factor;
+  color: @brand;
+  font-size: 5 * @size-factor;
+  text-align: center;
+  border-radius: 1 * @size-factor;
+}
+
+// flex
+.flex-1{
+  flex: 1;
+}
+.space-between-line {
+  width: 100%;
+  .flex-box-mixins(row, space-between, flex-start);
+}
+
+// section
+.section-container {
+  width: 100%;
+  flex-direction: column;
+}
+.section {
+  flex-direction: column;
+  padding-bottom: @gap-3;
+  background-color: @white;
+}
+.section-title {
+  width: 100%;
+  align-content: center;
+  margin-bottom: @gap-2;
+  padding: @gap-3;
+  .section-title-line {
+    width: 6px;
+    background-color: @brand;
+    margin: 8px @gap-1 8px 0;
+  }
+}
+.section-title-bordered {
+  .section-title;
+  background-color: @white;
+  .border-bottom-mixins();
+}
+.section-content {
+  flex-wrap: wrap;
+  padding: 0 @gap-3;
+}
+.section-label {
+  font-size: 25px;
+  border-radius: 6px;
+  height: 80px;
+  width: 300px;
+  text-align: center;
+  margin: @gap-1;
+  background-color: @bg-grey;
+}
+.section-item-text{
+  font-size: 20px;
+  height: 60px;
+  text-align: center;
+}
+
+// list
+.list-container {
+  background-color: @white;
+  width: 100%;
+  flex: 1;
+  padding: 0 @gap-3;
+}
+.list-item {
+  width: 100%;
+  padding: @gap-3 0;
+  border-bottom-width: 1px;
+  border-bottom-color: @border-grey;
+  border-style: solid;
+  .list-rank {
+    width: 50px;
+    height: 50px;
+    background-color: @bg-grey;
+    border-radius: 25px;
+    margin-right: @gap-1;
+    .list-rank-text {
+      width: 100%;
+      text-align: center;
+      color: @text-grey;
+    }
+  }
+}
+.load-status {
+  padding: @gap-2;
+  justify-content: center;
+  .load-status-text {
+    color: @text-grey;
+    font-size: 6 * @size-factor;
+  }
+}
+
+// titlebar, search
+.title-bar {
+  height: 130px;
+  width: 100%;
+  padding: @gap-3 0 @gap-3 0;
+  justify-content: 40%;
+  background-color: @white;
+  .flex-box-mixins(row, flex-end, center);
+  .back{
+    font-size: 40px;
+    width: 60px;
+    height: 70px;
+  }
+  .menu {
+    font-size: 40px;
+    width: 100px;
+    height: 70px;
+    text-align: center;
+  }
+  .cancel {
+    font-size: 30px;
+    width: 110px;
+    height: 70px;
+    text-align: center;
+  }
+}
+.search {
+  background-color: @input-grey;
+  flex:1;
+  height: 70px;
+  padding: 0 @gap-2;
+  border-radius: 8px;
+  justify-content: center;
+  align-content: center;
+  .search-icon {
+    width: 40px;
+    height: 70px;
+    font-size: 25px;
+    color: @brand;
+  }
+  .search-input {
+    flex: 1;
+    font-size: 30px;
+  }
+}
+
+// comment-page
+.comment-page{
+  .textarea {
+    width: 100%;
+    height: 300px;
+    border: 1px solid @border-grey;
+    padding: @gap-2;
+    font-size: 6 * @size-factor;
+  }
+  .text-line{
+    padding: 0 @gap-3;
+    width: 100%;
+  }
+  .btn-line{
+    padding: @gap-3;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .publish-btn{
+    width: 150px;
+    height: 80px;
+    color: @white;
+    background-color: @brand;
+    border-radius: 4px;
+    text-align: center;
+  }
+}

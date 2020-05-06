@@ -1,0 +1,65 @@
+<template>
+    <div class="container">
+
+        <input class="btn" type="button" background-image={{img}} onclick=Scan() />
+        <text class="descri"> 点击扫码取袋</text>
+    </div>
+</template>
+
+
+<style lang="less">
+@import "../../styles/index.less";
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: @white;
+  margin-left: 250px;
+}
+.descri {
+  text-align: center;
+  align-items: center;
+}
+.btn {
+  background-color: @white;
+  width: 250px;
+  height: 250px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+</style>
+<script>
+
+export default {
+    data: {
+        img: '../../Common/icon/sc_blue.png',
+        sendmachine:
+            {
+                url: '',
+                method: 'POST',
+                data: {},
+                header: {
+                    token: ''
+                }
+            },
+    },
+    Scan() {
+        this.$app.$def.getStorage('userLogined').then(result => {
+
+            if (result === 'true') {
+                this.$app.$def.BarCodeScan()
+            }
+            else {
+                this.$app.$def.showToast(`请先登录！`)
+                this.$app.$def.route2theUrl('Pages/login', true)
+            }
+        }).catch(e => {
+            this.$app.$def.showToast(`${e}`)
+        })
+    },
+
+
+
+}
+
+</script>

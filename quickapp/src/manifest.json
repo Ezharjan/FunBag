@@ -1,0 +1,113 @@
+{
+  "package": "com.example.funbag",
+  "name": "趣袋",
+  "versionName": "1.0.0",
+  "versionCode": "1",
+  "minPlatformVersion": "1000",
+  "icon": "/Common/icon/project-logo.png",
+  "features": [
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.router"
+    },
+    {
+      "name": "system.shortcut"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "service.share"
+    },
+    {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.storage"
+    }
+  ],
+  "permissions": [
+    {
+      "origin": "*"
+    }
+  ],
+  "config": {
+    "logLevel": "debug"
+  },
+  "router": {
+    "entry": "Pages/Main",
+    "pages": {
+      "Pages/Main": {
+        "component": "index"
+      },
+      "Pages/My": {
+        "component": "index"
+      },
+      "Pages/userinfo": {
+        "component": "index"
+      },
+      "Pages/login": {
+        "component": "index"
+      },
+      "Pages/getdata": {
+        "component": "index"
+      },
+      "Pages/datatable": {
+        "component": "index"
+      },
+      "Pages/bags": {
+        "component": "index"
+      },
+      "Pages/wallet": {
+        "component": "index"
+      },
+      "About": {
+        "component": "index"
+      }
+    },
+    "widgets": {
+      "CardDemo/NegativeScreen": {
+        "name": "carddemo",
+        "description": "负一屏卡片",
+        "component": "index",
+        "path": "/cardtest",
+        "features": [
+          {
+            "name": "system.network"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#55c7f9",
+    "titleBarTextColor": "#414141",
+    "menu": true,
+    "pages": {
+      "Pages/Main": {
+        "titleBar": false
+      },
+      "Pages/bags": {
+        "titleBar": false
+      },
+      "Pages/userinfo": {
+        "titleBar": false
+      },
+      "Pages/wallet": {
+        "titleBar": false
+      },
+      "Pages/Scan": {},
+      "Pages/Msg": {},
+      "Pages/My": {},
+      "Pages/login": {
+        "titleBar": false,
+        "menu": false
+      },
+      "About": {
+        "menu": false
+      }
+    }
+  }
+}

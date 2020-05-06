@@ -1,0 +1,58 @@
+<script>
+
+/**
+ * @desc: 应用级别的配置、方法，供所有页面公用；
+ */
+import { $util, $apis } from './helper'
+
+/* @desc: 注入方法至全局 global,以便页面调用 */
+const hook2global = global.__proto__ || global
+hook2global.$apis = $apis
+
+export default {
+    showMenu: $util.showMenu,
+    createShortcut: $util.createShortcut,
+    route2theUrl: $util.route2theUrl,
+    getTime: $util.getTime,
+    requestHandle: $util.requestHandle,
+    setStorage: $util.setStorage,
+    getStorage: $util.getStorage,
+    showToast: $util.showToast,
+    quitlogin: $util.quitlogin,
+    loadURL: $util.loadURL,
+    BarCodeScan: $util.BarCodeScan,
+    data: {
+        time: $util.getTime(),
+        selectedTab: 0,
+        machine: {
+            id: '',
+            type: ''
+        },
+        token: '',
+        userinfo: {
+            
+        },
+    },
+    setSelectedTab(key) {
+        this.selectedTab = key
+    },
+    saveuserinfo(info) {
+        this.userinfo = info
+    },
+    getdata() {
+        return this.data
+    },
+    onCreate() {
+        $util.setStorage('userLogined', 'false')
+        $util.getStorage('userLogined').then(result => {
+            // $util.showToast(`suc:${result}`)
+        }).catch(e => {
+            $util.showToast(`error:${e}`)
+        })
+        this.selectedTab = 0
+    },
+    onDestroy() {
+
+    },
+}
+</script>

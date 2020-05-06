@@ -1,0 +1,45 @@
+<template>
+  <div class="title-bar">
+    <text  class="iconfont" if="showBack" onclick="goBack">&#xe6a8;</text>
+    <text class="center-title">{{title}}</text>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+export default {
+  data: {},
+  props: {
+    showBack: {
+      default: false
+    },
+    title: {}
+  },
+
+  goBack() {
+    router.back()
+  },
+
+}
+</script>
+
+<style lang="less">
+@import '../../styles/index.less';
+.title-bar{
+  background-color: @theme-blue;
+  .border-bottom-mixins(2px,@theme-blue)
+}
+.center-title {
+  flex: 1;
+  font-size: 8 * @size-factor;
+  color: @white;
+  text-align: center;
+}
+.iconfont
+{
+  margin-left: 2*@size-factor;
+  color:@white;
+  font-size: 8*@size-factor;
+}
+
+</style>

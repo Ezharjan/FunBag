@@ -1,0 +1,6 @@
+node_modules
+build
+dist
+src/Pages/getdata
+src/Pages/datatable
+src/Pages/WebSocket-test

@@ -1,0 +1,57 @@
+@import './default.less';
+@import './loading.less';
+ul,li{
+    list-style: none;
+
+  
+}
+
+.ant-menu-dark{
+    background-color: #290b30;
+}
+.clearfix{
+    &::after{
+        content: '';
+        clear: both;
+        display: block;
+        visibility: hidden;
+        
+       
+    }
+}
+
+.container{
+    display: flex;
+    .nav-left{
+        background-color: #290b30;//#0015290vb
+        color: #ffffff;
+        height: calc(100vh);
+      
+    }
+    .main{
+        height: calc(100vh);
+        background-color:#ffffff;
+        overflow: auto;
+    }
+    .content{
+        padding: 10px;
+        
+    }
+}
+.content-wrap{
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    margin-top: -3px;
+    .ant-table-wrapper{
+        margin-left: -1px;
+        margin-right: -1px;
+    }
+}
+.operate-wrap{
+    button{
+        margin-right: 10px;
+        border: none;
+    
+
+    }
+}

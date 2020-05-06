@@ -1,0 +1,185 @@
+
+<import name="title-bar" src="../../components/bar/title-bar.ux"></import>
+<template>
+  <div class="page-wrapper">
+
+    <title-bar title='' show-back="{{true}}"></title-bar>
+    <div class="login-container">
+      <div class="login-logo">
+        <image class="logo" src="../../Common/icon/project-logo.png"></image>
+      </div>
+      <div class="login-item">
+        <input type="number" class="login-input" placeholder="请输入账号" value="{{input.account}}" onchange="changeAccount" />
+      </div>
+      <div class="login-item">
+        <input type="password" class="login-input" placeholder="请输入密码" value="{{input.password}}" onchange="changePassword" />
+      </div>
+      <div class="login-item" show="{{isshow}}">
+        <input type="password" class="login-input" placeholder="请再次输入密码" value="{{input.repassword}}" onchange="changeRePassword" />
+      </div>
+      <text class="login-btn" show="{{!isshow}}" onclick="login">登录</text>
+      <text class="register-btn" show="{{!isshow}}" onclick="showregister">注册</text>
+      <text class="register-btn" show="{{isshow}}" onclick="register">注册</text>
+
+    </div>
+  </div>
+</template> 
+
+<script>
+import prompt from '@system.prompt'
+import router from '@system.router'
+export default {
+  data: {
+    input: {
+      account: '',
+      password: '',
+      repassword: '',
+    },
+    registerparams: {
+      url: 'http://127.0.0.1:7300/mock/5e89d63e899aab0520cf2533/machine/register',
+      method: "POST",
+      data: {}
+    },
+    loginparams: {
+      url: 'http://127.0.0.1:7300/mock/5e89d63e899aab0520cf2533/machine/account',
+      method: "POST",
+      data: {}
+    },
+    isshow: false,
+  },
+  changeAccount(e) {
+    this.input.account = e.value
+  },
+  changePassword(e) {
+    this.input.password = e.value
+  },
+  changeRePassword(e) {
+    this.input.repassword = e.value
+  },
+  login() {
+
+    if (this.input.account === '' || this.input.password === '') {
+      prompt.showToast({ message: `账号或密码不能为空` })
+    }
+    else {
+      
+       this.loginparams.data = this.input;
+       
+       //test
+       this.$app.$def.setStorage('userLogined', true)
+       this.$app.$def.token=156161
+       router.back()
+        this.$app.$def.setSelectedTab(2)
+       this.$app.$def.route2theUrl('Pages/Main', false)
+       this.$app.$def.showToast(`登录成功`)
+       //--------------------------------
+
+       /*this.$app.$def.requestHandle(this.loginparams).then(result => {
+         if (result.success) {        
+           this.$app.$def.setStorage('userToken', result.token)
+           this.$app.$def.token=result.token
+           this.$app.$def.setStorage('userLogined', true)
+           this.$app.$def.setSelectedTab(3)
+           this.$app.$def.route2theUrl('Pages/Main', false)
+           prompt.showToast({
+             message: `${result.success}`
+            })   
+         }
+         else {
+           this.password = '',
+             prompt.showToast({
+               message: `msg: ${result.msg}, error_code:${result.error_code}`
+             })
+         }
+       }).catch(error => {
+         prompt.showToast({
+           message: `fail: ${error}`
+         })
+       })*/
+    }
+  },
+  getuserinfo(){
+  },
+  showregister() {
+    
+    if (this.input.account != '' || this.input.password != '') {
+      this.input.account = this.input.password = '';
+    }
+    this.isshow = true;
+  },
+  register() {
+    if (this.input.account === '' || this.input.password === '')
+      prompt.showToast({ message: `账号或密码不能为空` })
+    else if (this.input.repassword === '')
+      prompt.showToast({ message: `请再次输入密码` })
+    else if (this.input.repassword != this.input.password) {
+      prompt.showToast({ message: `两次输入密码不一致` })
+      this.input.repassword = this.input.password = '';
+    }
+    else {
+      this.registerparams.data = this.input;
+      this.$app.$def.requestHandle(this.registerparams).then(result => {
+        if (result.success) {
+          prompt.showToast({ message: `${result.msg}` })
+        }
+        else {
+          prompt.showToast({ message: `${result.msg}` })
+          this.isshow = false;
+          this.input.account = this.input.repassword = this.input.password = '';
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import "../../styles/index.less";
+
+.login-container {
+  .page-container-white;
+  padding-left: @gap-7;
+  padding-right: @gap-7;
+
+  .login-item {
+    width: 100%;
+    height: 120px;
+    justify-content: space-between;
+    align-items: center;
+    .border-bottom-mixins;
+    .login-input {
+      text-align: left;
+      flex: 1;
+    }
+  }
+  .login-logo {
+    margin: @gap-5 0 @gap-3 0;
+    justify-content: center;
+    .logo {
+      width: 250px;
+      height: 250px;
+      margin-bottom: @gap-10;
+    }
+  }
+  .login-btn {
+    width: 100%;
+    height: 75px;
+    margin-top: 80px;
+    color: @white;
+    background-color: @theme-blue;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 7 * @size-factor;
+  }
+  .register-btn {
+    width: 100%;
+    height: 75px;
+    margin-top: 80px;
+    color: @white;
+    background-color: @theme-blue;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 7 * @size-factor;
+  }
+}
+</style>

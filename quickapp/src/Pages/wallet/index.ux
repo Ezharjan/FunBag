@@ -1,0 +1,104 @@
+<import name="title-bar" src="../../components/bar/title-bar.ux"></import>
+    
+<template>
+  <div class="contianer">
+
+    <title-bar title='钱包' show-back="{{true}}"></title-bar>
+    <div class="card">'
+
+      <div class='row-box'>
+        <div class='wallet-titile'>
+          <image class="title-logo" src="../../Common/icon/wallet-selected.png"></image>
+          <text class="title-text">余额</text>
+        </div>
+        <div class="wallet-money">
+          <text class="money-text">￥{{money}}</text>
+        </div>
+      </div>
+
+    </div>
+    <div class='recharge-container' >
+      <text class='recharge-btn' onclick='recharge'>充值</text>
+    </div>
+  </div>
+</template>
+
+<script>
+import alipay from '@service.alipay'
+export default {
+  data: {
+    money: '20.0',
+  },
+  recharge() {
+    alipay.pay({
+      orderInfo: 'order1',
+      callback: function (ret) {
+       // this.$app.$def.showToast(`充值成功！`)
+      }
+    })
+
+  }
+}
+</script>
+
+<style lang="less">
+@import "../../styles/index.less";
+.contianer {
+  flex-direction: column;
+  width: 100%;
+}
+.card {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 240px;
+  width: 92%;
+  border-width: 10px;
+  margin-top: 30px;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-right: 30px;
+  border-color: @theme-blue;
+  border-radius: 20px;
+  margin-bottom: 1.5 * @size-factor;
+  padding: 20px 20px 20px 20px;
+}
+
+.row-box {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.wallet-title {
+  flex-direction: row;
+}
+.title-logo {
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+.title-text {
+  margin-right: 40px;
+  color: @theme-blue;
+  font-size: 10 * @size-factor;
+}
+.money-text {
+  font-size: 10 * @size-factor;
+}
+
+.recharge-container {
+  width: 100%;
+  .flex-box-mixins(row, center, center);
+}
+.recharge-btn {
+  width: 92%;
+  height: 80px;
+  color: @white;
+  margin-top: 80px;
+  border-radius: 0px;
+  text-align: center;
+  background-color: @theme-blue;
+  border-color: @theme-blue;
+  border-style: solid;
+}
+</style>

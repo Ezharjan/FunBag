@@ -1,0 +1,168 @@
+<template>
+    <!-- 列表实现，监听列表的scrollbottom事件，列表滚动到底部时加载更多数据 -->
+    <list class="msg-container" onscrollbottom="renderMoreListItem">
+        <!-- 推送列表 -->
+        <list-item type="msg" class="item-msg" for="msgs" onclick=this.$app.$def.loadURL(this.url)>
+            <image class="msg-image" src="{{$item.img}}"></image>
+            <div class="msg-text-wrap">
+                <text class="msg-text-name">{{$item.name}}</text>         
+                <div class="sec-text">
+                <text class="msg-text-date">{{$item.date}}  </text>                
+                <text class="msg-text-num" >阅读:{{$item.num}}  </text>
+                </div>
+              
+            </div>
+        </list-item>
+
+        <list-item type="loadStatus" class="load-status">
+            <progress type="circular" show="{{hasMoreData}}"></progress>
+            <text class='tip' show="{{hasMoreData}}">加载更多</text>
+            <text class='tip' show="{{!hasMoreData}}">没有更多了~</text>
+        </list-item>
+    </list>
+</template>
+
+<script>
+import {msgDatas} from '../../assests/js/msgData.js'
+//import router from '@system.router'
+
+// 模拟fetch请求数据
+function callFetch(callback) {
+    setTimeout(function () {
+        callback(msgDatas)
+    }, 500)
+}
+
+// 内存中存储的列表数据
+let memList = []
+
+export default {
+    data: {
+        url: 'http://www.zhhbw.com/',
+        msgs: [],
+        hasMoreData: true,
+        // 每次渲染的推送数
+        size: 10,
+        // 是否正在fetch请求数据
+        isLoadingData: false
+    },
+    onInit() {
+        this.msgs = [];
+        // 获取数据并渲染列表
+        this.loadAndRender()
+    },
+    /**
+     * 请求并渲染
+     */
+    loadAndRender(doRender = true) {
+        this.isLoadingData = true
+        // 重新请求数据并根据模式判断是否需要渲染列表
+        callFetch(function (resList) {
+            this.isLoadingData = false
+            if (!resList) {
+                console.error(`数据请求错误`)
+            }
+            else if (!resList.length) {
+                this.hasMoreData = false
+            }
+            else {
+                memList = memList.concat(resList)
+                if (doRender) {
+                    this._renderList()
+                }
+            }
+        }.bind(this))
+    },
+    _renderList() {
+        // 渲染列表
+        if (memList.length > 0) {
+            const list = memList.splice(0, this.size)
+            this.msgs = this.msgs.concat(list)
+        }
+        if (memList.length <= this.size) {
+            // 提前请求新的数据
+            this.loadAndRender(false)
+        }
+    },
+    /**
+     * 滑动到底部时加载更多
+     */
+    renderMoreListItem() {
+        if (!this.isLoadingData) {
+            this._renderList()
+        }
+    },
+     /*-onItemClick(index) { 
+        router.push({ uri: 'pages/' })
+    }*/
+}
+</script>
+<style lang="less">
+@import "../../styles/index.less";
+
+.msg-container {
+  width: 100%;
+  background-color: @theme-blue;
+  flex-direction: column;
+  .item-msg {
+    background-color: #ffffff;
+    flex-direction: column;
+    width: 100%;
+    height: 490px;
+    border-radius: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    .msg-image {
+      width: 100%;
+      height: 100%;
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+    .msg-text-wrap {
+      width: 100%;
+      height: 33%;
+      justify-content: center;
+      padding: 16px;
+      background-color: #ffffff;
+      flex-direction: column;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      .msg-text-name {
+        color: #000000;
+        font-size: 35px;
+        margin-bottom: 5px;
+      }
+      .msg-text-date {
+   
+        margin-top: 10x;
+        margin-right:10px;
+        color: #bbbbbb;
+        font-size: 30px;
+      }
+      .msg-text-num
+      {
+        margin-top: 10px;
+        color: #bbbbbb;
+        font-size: 25px;
+      }
+     .sec-text
+     {   
+        flex-direction: row;
+        justify-content: flex-end;
+     }
+    }
+  }
+  .load-status {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    .tip{
+        color: @white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+}
+
+</style>
