@@ -2,56 +2,43 @@
 @import './loading.less';
 ul,li{
     list-style: none;
-
-  
-}
-
-.ant-menu-dark{
-    background-color: #290b30;
 }
 .clearfix{
     &::after{
-        content: '';
-        clear: both;
+        content:' ';
+        clear:both;
         display: block;
         visibility: hidden;
-        
-       
     }
 }
-
 .container{
-    display: flex;
     .nav-left{
-        background-color: #290b30;//#0015290vb
+        background-color:#001529;
         color: #ffffff;
         height: calc(100vh);
-      
     }
     .main{
         height: calc(100vh);
-        background-color:#ffffff;
+        background-color: @colorL;
         overflow: auto;
     }
     .content{
-        padding: 10px;
-        
+        position: relative;
+        padding: 20px;
     }
 }
+
 .content-wrap{
     background: #ffffff;
     border: 1px solid #e8e8e8;
     margin-top: -3px;
     .ant-table-wrapper{
         margin-left: -1px;
-        margin-right: -1px;
+        margin-right: -2px;
     }
 }
-.operate-wrap{
+.ant-card{
     button{
         margin-right: 10px;
-        border: none;
-    
-
     }
 }

@@ -1,37 +1,40 @@
-import React from "react";
-import { Card, Form, Input, Button, Radio, Select, DatePicker, TimePicker, Icon, Checkbox, Upload, InputNumber, Switch } from "antd";
-import moment from "moment";
+import React from 'react'
+import { Card, Form, Button, Input, Checkbox, Radio, Select, Switch, DatePicker, TimePicker, Upload, Icon, message, InputNumber } from 'antd'
+import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
-
 class FormRegister extends React.Component {
+
     state = {}
+
+    handleSubmit = () => {
+        let userInfo = this.props.form.getFieldsValue();
+        console.log(JSON.stringify(userInfo))
+        message.success(`${userInfo.userName} 恭喜你，您通过本次表单组件学习，当前密码为：${userInfo.userPwd}`)
+    }
+
     getBase64 = (img, callback) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);
     }
-    handleSubmit = () => {
-        let userInfo = this.props.form.getFieldsValue();
-        console.log(JSON.stringify(userInfo));
-    }
-    handleChange = info => {
+
+    handleChange = (info) => {
         if (info.file.status === 'uploading') {
             this.setState({ loading: true });
             return;
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl =>
-                this.setState({
-                    userImg: imageUrl,
-                    loading: false,
-                }),
-            );
+            this.getBase64(info.file.originFileObj, imageUrl => this.setState({
+                userImg: imageUrl,
+                loading: false,
+            }));
         }
-    };
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -53,41 +56,41 @@ class FormRegister extends React.Component {
                 }
             }
         }
+        const rowObject = {
+            minRows: 4, maxRows: 6
+        }
         return (
             <div>
                 <Card title="注册表单">
                     <Form layout="horizontal">
                         <FormItem label="用户名" {...formItemLayout}>
                             {
-                                getFieldDecorator('userName',{
-                                        initialValue: "",
-                                        rules: [{
+                                getFieldDecorator('userName', {
+                                    initialValue: '',
+                                    rules: [
+                                        {
                                             required: true,
-                                            message: "Please input your username!"
-                                        }, {
-                                            min: 5, max: 10,
-                                            message: "长度不够"
-                                        }, {
-                                            pattern: new RegExp('^\\w+$', 'g'),
-                                            message: '用户名必须为英文字母'
-                                        }]
-                                    })(<Input prefix={<Icon type="user" />} placeholder="请输入用户名" />)
-
+                                            message: '用户名不能为空'
+                                        }
+                                    ]
+                                })(
+                                    <Input placeholder="请输入用户名" />
+                                )
                             }
                         </FormItem>
                         <FormItem label="密码" {...formItemLayout}>
                             {
                                 getFieldDecorator('userPwd', {
-                                    initialValue: "",
-                                    rules: []
-                                })(<Input prefix={<Icon type="lock" />} type="password" placeholder="请输入密码" />)
+                                    initialValue: ''
+                                })(
+                                    <Input type="password" placeholder="请输入密码" />
+                                )
                             }
                         </FormItem>
                         <FormItem label="性别" {...formItemLayout}>
                             {
                                 getFieldDecorator('sex', {
-                                    initialValue: "1",
-                                    rules: []
+                                    initialValue: '1'
                                 })(
                                     <RadioGroup>
                                         <Radio value="1">男</Radio>
@@ -98,9 +101,8 @@ class FormRegister extends React.Component {
                         </FormItem>
                         <FormItem label="年龄" {...formItemLayout}>
                             {
-                                getFieldDecorator('sex', {
-                                    initialValue: "18",
-                                    rules: []
+                                getFieldDecorator('age', {
+                                    initialValue: 18
                                 })(
                                     <InputNumber />
                                 )
@@ -109,13 +111,14 @@ class FormRegister extends React.Component {
                         <FormItem label="当前状态" {...formItemLayout}>
                             {
                                 getFieldDecorator('state', {
-                                    initialValue: "1",
-                                    rules: []
+                                    initialValue: '2'
                                 })(
                                     <Select>
-                                        <Option value="1">咸鱼一条</Option>
-                                        <Option value="2">共大才子</Option>
-                                        <Option value="3">百度FE</Option>
+                                        <Option value="1">Potential</Option>
+                                        <Option value="2">Enterprise</Option>
+                                        <Option value="3">SVIP</Option>
+                                        <Option value="4">VIP</Option>
+                                        <Option value="5">Common</Option>
                                     </Select>
                                 )
                             }
@@ -123,22 +126,17 @@ class FormRegister extends React.Component {
                         <FormItem label="爱好" {...formItemLayout}>
                             {
                                 getFieldDecorator('interest', {
-                                    initialValue: ['1', '3'],
-                                    rules: []
+                                    initialValue: ['2', '5']
                                 })(
-                                    <Select
-                                        mode="multiple"
-                                        placeholder="Please select">
+                                    <Select mode="multiple">
                                         <Option value="1">游泳</Option>
-                                        <Option value="2">羽毛球</Option>
-                                        <Option value="3">足球</Option>
-                                        <Option value="4">篮球</Option>
-                                        <Option value="5">排球</Option>
-                                        <Option value="6">乒乓球</Option>
-                                        <Option value="7">网球</Option>
-                                        <Option value="8">橄榄球</Option>
-                                        <Option value="9">壁球</Option>
-                                        <Option value="10">手球</Option>
+                                        <Option value="2">打篮球</Option>
+                                        <Option value="3">踢足球</Option>
+                                        <Option value="4">跑步</Option>
+                                        <Option value="5">爬山</Option>
+                                        <Option value="6">取袋</Option>
+                                        <Option value="7">桌球</Option>
+                                        <Option value="8">麦霸</Option>
                                     </Select>
                                 )
                             }
@@ -156,7 +154,7 @@ class FormRegister extends React.Component {
                         <FormItem label="生日" {...formItemLayout}>
                             {
                                 getFieldDecorator('birthday', {
-                                    initialValue: moment('2019-10-10 17:56:11')
+                                    initialValue: moment('2018-08-08')
                                 })(
                                     <DatePicker
                                         showTime
@@ -168,21 +166,18 @@ class FormRegister extends React.Component {
                         <FormItem label="联系地址" {...formItemLayout}>
                             {
                                 getFieldDecorator('address', {
-                                    initialValue: '北京市平乐园'
+                                    initialValue: '北京市海淀区奥林匹克公园'
                                 })(
                                     <TextArea
-                                        autosize={{ minRows: 4, maxRows: 6 }}
+                                        autosize={rowObject}
                                     />
                                 )
                             }
                         </FormItem>
                         <FormItem label="早起时间" {...formItemLayout}>
                             {
-                                getFieldDecorator('time', {
-                                    initialValue: moment('12:08', 'HH:mm')
-                                })(
-                                    <TimePicker
-                                        format={'HH:mm'} />
+                                getFieldDecorator('time')(
+                                    <TimePicker />
                                 )
                             }
                         </FormItem>
@@ -192,10 +187,10 @@ class FormRegister extends React.Component {
                                     <Upload
                                         listType="picture-card"
                                         showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                        action="//jsonplaceholder.typicode.com/posts/"
                                         onChange={this.handleChange}
                                     >
-                                        {this.state.userImg ? <img src={this.state.userImg} alt='' /> : <Icon type="plus" />}
+                                        {this.state.userImg ? <img src={this.state.userImg} /> : <Icon type="plus" />}
                                     </Upload>
                                 )
                             }
@@ -203,9 +198,7 @@ class FormRegister extends React.Component {
                         <FormItem {...offsetLayout}>
                             {
                                 getFieldDecorator('userImg')(
-                                    <Checkbox>
-                                        我已经阅读协议<a href="#">公司协议</a>
-                                    </Checkbox>
+                                    <Checkbox>我已阅读过<a href="#">趣袋协议</a></Checkbox>
                                 )
                             }
                         </FormItem>
@@ -215,7 +208,7 @@ class FormRegister extends React.Component {
                     </Form>
                 </Card>
             </div>
-        )
+        );
     }
 }
-export default Form.create()(FormRegister)
+export default Form.create()(FormRegister);

@@ -1,0 +1,30 @@
+{
+    "name": "mock-server",
+    "version": "1.0.0",
+    "description": "mock for imooc-manager",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "koa2",
+        "node"
+    ],
+    "author": "河畔一角",
+    "license": "ISC",
+    "dependencies": {
+        "@koa/cors": "^3.0.0",
+        "ejs": "^3.0.1",
+        "koa": "^2.11.0",
+        "koa-bodyparser": "^4.2.1",
+        "koa-json": "^2.0.2",
+        "koa-logger": "^3.2.1",
+        "koa-router": "^8.0.7",
+        "koa-static": "^5.0.0",
+        "koa-views": "^6.2.1",
+        "log4js": "^6.1.2",
+        "mockjs": "^1.1.0",
+        "mongoose": "^5.8.12"
+    }
+}

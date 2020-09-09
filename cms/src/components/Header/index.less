@@ -11,12 +11,11 @@
             text-align: left;
             font-size: 18px;
             img{
-                height: 35px;
+                height: 40px;
                 vertical-align: middle;
             }
             span{
-                margin-left: 10px;
-                vertical-align: middle;
+                margin-left: 5px;
             }
         }
         a{
@@ -27,15 +26,15 @@
         height: 40px;
         line-height: 40px;
         padding: 0 20px;
-        border-top: 1px solid #000000;//#f9c700
+        border-top: 1px solid #f9c700;
         .breadcrumb-title{
             text-align: center;
             font-size: @fontC;
             &:after{
                 position: absolute;
                 content: '';
-                top: 39px;
-                left: 82px;
+                left:73px;
+                top:39px;
                 border-top: 9px solid @colorM;
                 border-left: 12px solid transparent;
                 border-right: 12px solid transparent;
@@ -43,16 +42,26 @@
         }
         .weather{
             text-align: right;
+            font-size: 14px;
             .date{
                 margin-right: 10px;
+                vertical-align: middle;
+            }
+            .weather-img{
+                img{
+                    height: 15px;
+                }
+            }
+            .weather-detail{
+                margin-left: 5px;
+                vertical-align: middle;
             }
         }
     }
 }
-// common 页面简单头
 .simple-page{
-    .header-top{
-      background:#23a82a;
-      color:@colorM;
-    }
+  .header-top{
+    background:#1890ff;
+    color:@colorM;
+  }
 }

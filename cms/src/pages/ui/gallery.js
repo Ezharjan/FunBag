@@ -1,148 +1,71 @@
 import React from 'react'
-import { Row, Col, Modal } from 'antd'
-import { Card, Form, Input, Button, Radio, Select, DatePicker, TimePicker, Icon, Checkbox, Upload, InputNumber, Switch } from "antd";
-import './ui.less'
-import moment from "moment";
+import { Card, Row, Col, Modal } from 'antd'
 
-const RadioGroup = Radio.Group;
-const Option = Select.Option;
-const FormItem = Form.Item;
-export default class Gallery extends React.Component{
+export default class Gallery extends React.Component {
+
     state = {
-     visible:false
+        visible: false
     }
 
-
-    getBase64 = (img, callback) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result));
-        reader.readAsDataURL(img);
-    }
-    handleSubmit = () => {
-        let userInfo = this.props.form.getFieldsValue();
-        console.log(JSON.stringify(userInfo));
-    }
-    handleChange = info => {
-        if (info.file.status === 'uploading') {
-            this.setState({ loading: true });
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            this.getBase64(info.file.originFileObj, imageUrl =>
-                this.setState({
-                    userImg: imageUrl,
-                    loading: false,
-                }),
-            );
-        }
-    };
-    openGallery(imgSrc){
+    openGallery = (imgSrc) => {
         this.setState({
-            visible:true,
-            currentImg:"/new/"+imgSrc
+            visible: true,
+            currentImg: '/gallery/' + imgSrc
         })
     }
-    render()
-    {
-        //const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: {
-                xs: 24,
-                sm: 4
-            },
-            wrapperCol: {
-                xs: 24,
-                sm: 12
-            }
-        }
-        const offsetLayout = {
-            wrapperCol: {
-                xs: 24,
-                sm: {
-                    span: 12,
-                    offset: 4
-                }
-            }
-        }
+    render() {
         const imgs = [
-            ['1.png','2.png','3.png'],
-            ['4.png','5.png','6.png'],
-            ['7.png','8.png','9.png'],
-            ['10.png','11.png','12.png'],
-            ['13.png'],
-            
-  
+            ['1.png', '2.png', '3.png', '4.png', '5.png'],
+            ['6.png', '7.png', '8.png', '9.png', '10.png'],
+            ['11.png', '12.png', '13.png', '14.png', '15.png'],
+            ['16.png', '17.png', '18.png', '19.png', '20.png'],
+            ['21.png', '22.png', '23.png', '24.png', '25.png']
         ]
-        const imgList = imgs.map((list)=>list.map((item)=>
+        const imgList = imgs.map((list) => list.map((item) =>
             <Card
-                cover={<img src={'/new/'+item} onClick={()=>this.openGallery(item)} alt=""/>}
-                style={{marginBottom:10}}
+                style={{ marginBottom: 10 }}
+                cover={<img src={'/gallery/' + item} onClick={() => this.openGallery(item)} />}
             >
                 <Card.Meta
-                    title=" "
-                    description=" "
+                    title="环保我做主"
+                    description="趣味袋子做环保，环保项目我来跑。"
                 />
             </Card>
         ))
         return (
-            
-            <div>  
-                <Row gutter="10">
-                    <Col md={6}>
+            <div className="card-wrap">
+                <Row gutter={10}>
+                    <Col md={5}>
                         {imgList[0]}
                     </Col>
-                    <Col md={6}>
+                    <Col md={5}>
                         {imgList[1]}
                     </Col>
-                    <Col md={6}>
+                    <Col md={5}>
                         {imgList[2]}
                     </Col>
-                    <Col md={6}>
+                    <Col md={5}>
                         {imgList[3]}
                     </Col>
-                    <Col md={6}>
+                    <Col md={4}>
                         {imgList[4]}
-                    </Col>      
-
+                    </Col>
                 </Row>
                 <Modal
                     width={300}
                     height={500}
-                    title="图片详情"
                     visible={this.state.visible}
-                    onCancel={()=>{
+                    title="图片画廊"
+                    onCancel={() => {
                         this.setState({
-                            visible:false
+                            visible: false
                         })
                     }}
                     footer={null}
                 >
-                    <img src={this.state.currentImg} alt="" width="100%"/>
+                    {<img src={this.state.currentImg} alt="" style={{ width: '100%' }} />}
                 </Modal>
-              
- 
-                 
             </div>
-        )
+        );
     }
 }
-
-/*
-      <Form layout="horizontal">
-                        <FormItem label="头像" {...formItemLayout} >
-                            {
-                                getFieldDecorator('userImg')(
-                                    <Upload
-                                        listType="picture-card"
-                                        showUploadList={false}
-                                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                        onChange={this.handleChange}
-                                    >
-                                        {this.state.userImg ? <img src={this.state.userImg} alt='' /> : <Icon type="plus" />}
-                                    </Upload>
-                                )
-                            }
-                        </FormItem>
-                    </Form>
-*/
